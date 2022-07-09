@@ -4,7 +4,6 @@ import requests
 from .classRandomForest import MyRandomForest
 
 
-
 def index(request):
     model = MyRandomForest()
     model.fit_model()
