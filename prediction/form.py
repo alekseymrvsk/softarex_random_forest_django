@@ -1,6 +1,6 @@
 from django import forms
 from .models import Files
-from django.forms import ModelForm, FileInput
+from django.forms import FileInput
 
 
 class DocumentForm(forms.ModelForm):
