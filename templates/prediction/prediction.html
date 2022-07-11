@@ -22,14 +22,14 @@
             <form method="POST" class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.file }}
-                <button type="submit" class="save btn btn-default">Save</button>
+                <button type="submit" class="save btn btn-default">Predict</button>
             </form>
         </div>
 
         <div class="col-4 offset-1">
             <h1>Result</h1>
             <div class="alert alert-danger">
-                <b>metric: </b>{{ metric }}<br>
+                <b></b>{{ metric }}<br>
                 {% for info in predict %}
                     <b>Prediction: </b>{{ info }}<br>
                 {% endfor %}
