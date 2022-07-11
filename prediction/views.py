@@ -13,10 +13,10 @@ def index(request):
             form.save()
             model = MyRandomForest()
             model.fit_model()
-            predict = model.predict_data('user_input_data/input_user/%Y-%m-%d/test.csv')
+            predict = model.predict_data()
             metric = model.get_metric()
             context = {'metric': metric, 'predict': predict, 'form': form}
-            render(request, 'prediction/prediction.html', context)
+            return render(request, 'prediction/prediction.html', context)
 
     else:
         form = DocumentForm(request.POST, request.FILES)
