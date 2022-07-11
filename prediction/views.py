@@ -3,13 +3,14 @@ import requests
 from .classRandomForest import MyRandomForest
 from .form import DocumentForm
 from .models import Files
+from .models import UserProfile
 
 
 def index(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-
+            UserProfile.n_predict = UserProfile.n_predict + 1
             form.save()
             model = MyRandomForest()
             model.fit_model()
