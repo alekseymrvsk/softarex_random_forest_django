@@ -1,26 +1,19 @@
-from django.shortcuts import render, redirect
-import requests
+from django.core.files.storage import FileSystemStorage
+from django.shortcuts import render
 from .classRandomForest import MyRandomForest
-from .form import DocumentForm
-from .models import Files
-from .models import UserProfile
 
 
 def index(request):
-    if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            UserProfile.n_predict = UserProfile.n_predict + 1
-            form.save()
-            model = MyRandomForest()
-            model.fit_model()
-            predict = model.predict_data()
-            metric = model.get_metric()
-            context = {'metric': metric, 'predict': predict, 'form': form}
-            return render(request, 'prediction/prediction.html', context)
+    if request.method == "POST":
+        uploaded_file = request.FILES.get('file_to_process')
+        fs = FileSystemStorage()
+        filename = fs.save(uploaded_file.name, uploaded_file)
+        uploaded_file_url = fs.url(filename)
 
-    else:
-        form = DocumentForm(request.POST, request.FILES)
-    return render(request, 'prediction/prediction.html', {'form': form})
-
-
+        model = MyRandomForest()
+        model.fit_model()
+        predict = model.predict_data(uploaded_file_url)
+        metric = model.get_metric()
+        context = {'metric': metric, 'predict': predict, }
+        return render(request, 'prediction/prediction.html', context)
+    return render(request, 'prediction/prediction.html')
