@@ -51,5 +51,6 @@
 </body>
 </html>
 {% else %}
-    <h1>Error</h1>
+    <h1>Error, you need to login</h1>
+    <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'login' %}">Login</a>
 {% endif %}
