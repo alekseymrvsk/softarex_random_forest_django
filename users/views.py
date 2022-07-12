@@ -5,8 +5,6 @@ from django.views.generic.edit import CreateView
 from django.shortcuts import redirect
 
 
-# Create your views here.
-
 def home(request):
     return render(request, "registration/home.html")
 

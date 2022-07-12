@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% if user.is_authenticated %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,6 +12,14 @@
 <body>
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-bottom">
     <h5 class="my-0 mr-md-auto fs-4">Restaurant revenue</h5>
+    <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+        <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
+
+        <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'logout' %}">Logout</a>
+        <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' %}">Predict</a>
+        <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'home' %}">Home</a>
+
+    </nav>
 
 </div>
 
@@ -22,7 +31,7 @@
             <form method="POST" class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.file }}
-                <button type="submit" class="save btn btn-default">Predict</button>
+                <button type="submit" class="mt-2 btn btn-danger">Predict</button>
             </form>
         </div>
 
@@ -41,3 +50,6 @@
 </div>
 </body>
 </html>
+{% else %}
+    <h1>Error</h1>
+{% endif %}
