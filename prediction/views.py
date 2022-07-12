@@ -12,7 +12,7 @@ def index(request):
 
         model = MyRandomForest()
         model.fit_model()
-        predict = model.predict_data(uploaded_file_url)
+        predict = model.predict_data(uploaded_file_url[1:])
         metric = model.get_metric()
         context = {'metric': metric, 'predict': predict, }
         return render(request, 'prediction/prediction.html', context)
