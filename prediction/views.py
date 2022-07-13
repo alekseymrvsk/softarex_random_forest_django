@@ -21,5 +21,3 @@ def index(request):
         return render(request, 'prediction/prediction.html', context)
 
     return render(request, 'prediction/prediction.html')
-
-
