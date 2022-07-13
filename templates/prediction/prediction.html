@@ -39,7 +39,6 @@
             <h1>Result</h1>
             <div class="alert alert-danger">
                 <b></b>{{ metric }}<br>
-
                 {% for info in predict %}
                     <b>Prediction {{ forloop.counter }}: </b>{{ info }}<br>
                 {% endfor %}
