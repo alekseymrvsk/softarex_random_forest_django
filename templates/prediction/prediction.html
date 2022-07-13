@@ -31,7 +31,7 @@
             <form action={% url 'prediction' %} method="POST" class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="file" name="file_to_process">
-                <input type="submit" value="Process file">
+                <input type="submit" value="Make">
             </form>
         </div>
 
