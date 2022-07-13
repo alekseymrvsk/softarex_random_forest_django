@@ -18,17 +18,8 @@ def index(request):
         metric = model.get_metric()
 
         context = {'metric': metric, 'predict': predict, }
-
         return render(request, 'prediction/prediction.html', context)
+
     return render(request, 'prediction/prediction.html')
 
 
-def getpdf(request):
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="prediction.pdf"'
-    p = canvas.Canvas(response)
-    p.setFont("Times-Roman", 55)
-    p.drawString(100, 700, "Hello, Javatpoint.")
-    p.showPage()
-    p.save()
-    return response
