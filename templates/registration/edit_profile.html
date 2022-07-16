@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+{% if user.is_authenticated %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,6 +14,7 @@
     <h5 class="my-0 mr-md-auto fs-4">Restaurant revenue</h5>
     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
         {% if user.is_authenticated %}
+            <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'logout' %}">Logout</a>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'home' %}">Home</a>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' %}">Predict</a>
@@ -40,3 +41,7 @@
 
 </body>
 </html>
+{% else %}
+    <h1>Error, you need to login</h1>
+    <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'login' %}">Login</a>
+{% endif %}

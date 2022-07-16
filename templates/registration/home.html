@@ -14,10 +14,12 @@
     <h5 class="my-0 mr-md-auto fs-4">Restaurant revenue</h5>
     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
         {% if user.is_authenticated %}
+            <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'logout' %}">Logout</a>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'user_profile' %}">Profile</a>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' %}">Predict</a>
         {% else %}
+            <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'signup' %}">Sign Up</a>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'login' %}">Login</a>
         {% endif %}
