@@ -17,7 +17,7 @@
             <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
 
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'logout' %}">Logout</a>
-            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' %}">Predict</a>
+            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' user.pk %}">Predict</a>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'home' %}">Home</a>
 
         </nav>
@@ -29,7 +29,7 @@
 
             <div class="col-5 offset-1">
                 <h1>Input data</h1>
-                <form action={% url 'prediction' %} method="POST" class="post-form" enctype="multipart/form-data">
+                <form action={% url 'prediction' user.pk %} method="POST" class="post-form" enctype="multipart/form-data">
                     {% csrf_token %}
                     <h1>Test: </h1><input type="file" name="file_to_process" value="Choose file">
                     <h1>Train: </h1><input type="file" name="file_to_train" value="Choose file">
@@ -39,7 +39,7 @@
 
             <div class="col-4 offset-1">
                 <h1>Result</h1>
-
+                <h1>{{ n_predict }}</h1>
                 <b></b>{{ metric }}<br>
                 {% for info in predict %}
                     <div class="alert alert-danger">

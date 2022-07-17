@@ -17,7 +17,7 @@
             <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'logout' %}">Logout</a>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'home' %}">Home</a>
-            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' %}">Predict</a>
+            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' user.pk %}">Predict</a>
         {% else %}
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'home' %}">Home</a>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'signup' %}">Sign Up</a>
