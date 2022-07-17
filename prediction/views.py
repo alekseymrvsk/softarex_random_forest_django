@@ -1,3 +1,5 @@
+import numpy as np
+from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -13,6 +15,8 @@ logger = logging.getLogger(__name__)
 
 def index(request, user_id):
     model = MyRandomForest()
+    user_n_predict = User.objects.get(pk=user_id)
+
     if request.method == "POST":
         if request.FILES.get('file_to_train') is not None:
             uploaded_file_train = request.FILES.get('file_to_train')
@@ -44,10 +48,9 @@ def index(request, user_id):
             logger.error("Get metric")
         else:
             return render(request, 'error/error_dataset.html')
-        # user = UserProfile.objects.get(pk=user_id)
-        # user.n_predict += 1
-        # context = {'metric': metric, 'predict': predict, 'n_predict': user.n_predict, }
 
+        user_n_predict.n_predict += 1
+        user_n_predict.save()
         context = {'metric': metric, 'predict': predict, }
         return render(request, 'prediction/prediction.html', context)
 

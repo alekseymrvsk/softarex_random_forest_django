@@ -109,6 +109,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+AUTH_PROFILE_MODULE = "lib.UserProfile"
 
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "login"
