@@ -29,7 +29,8 @@
 
             <div class="col-5 offset-1">
                 <h1>Input data</h1>
-                <form action={% url 'prediction' user.pk %} method="POST" class="post-form" enctype="multipart/form-data">
+                <form action={% url 'prediction' user.pk %} method="POST" class="post-form"
+                      enctype="multipart/form-data">
                     {% csrf_token %}
                     <h1>Test: </h1><input type="file" name="file_to_process" value="Choose file">
                     <h1>Train: </h1><input type="file" name="file_to_train" value="Choose file">
@@ -39,6 +40,14 @@
 
             <div class="col-4 offset-1">
                 <h1>Result</h1>
+                <a href="{% url 'get_csv' user.pk %}">
+                    <button>Get CSV</button>
+                </a>
+                {% if flag %}
+                    <div id="some_flag" title="Some Flag">
+                        <p>Firstly predict your data</p>
+                    </div>
+                {% endif %}
                 <b></b>{{ metric }}<br>
                 {% for info in predict %}
                     <div class="alert alert-danger">

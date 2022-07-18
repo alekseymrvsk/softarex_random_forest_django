@@ -1,22 +1,27 @@
+import os
+
 import numpy as np
 from django.contrib.auth.models import User
+from django.core.exceptions import FieldDoesNotExist
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.shortcuts import render
 from reportlab.pdfgen import canvas
-
+import csv
 from users.models import UserProfile
 from .classRandomForest import MyRandomForest
 import logging
 import pandas as pd
+from wsgiref.util import FileWrapper
 
 logger = logging.getLogger(__name__)
 
 
 def index(request, user_id):
     model = MyRandomForest()
-    user_n_predict = User.objects.get(pk=user_id)
-
+    user_predict = User.objects.get(pk=user_id)
+    if os.path.exists("prediction/user_output_data/prediction" + user_predict.username + ".csv"):
+        os.remove("prediction/user_output_data/prediction" + user_predict.username + ".csv")
     if request.method == "POST":
         if request.FILES.get('file_to_train') is not None:
             uploaded_file_train = request.FILES.get('file_to_train')
@@ -48,10 +53,22 @@ def index(request, user_id):
             logger.error("Get metric")
         else:
             return render(request, 'error/error_dataset.html')
-
-        user_n_predict.n_predict += 1
-        user_n_predict.save()
+        pd.DataFrame(predict).to_csv("prediction/user_output_data/prediction" + user_predict.username + ".csv")
+        user_predict.n_predict += 1
+        user_predict.save()
         context = {'metric': metric, 'predict': predict, }
         return render(request, 'prediction/prediction.html', context)
 
     return render(request, 'prediction/prediction.html')
+
+
+def save_file(request, user_id):
+    try:
+        user_predict = User.objects.get(pk=user_id)
+        data = open(os.path.join("prediction/user_output_data/prediction" + user_predict.username + ".csv"), 'r').read()
+        response = HttpResponse(data, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment;filename=table.csv'
+    except FileNotFoundError:
+        return render(request, 'prediction/prediction.html', {'flag': True})
+
+    return response
