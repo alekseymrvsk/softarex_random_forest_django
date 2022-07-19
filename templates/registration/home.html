@@ -16,7 +16,7 @@
         {% if user.is_authenticated %}
             <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'logout' %}">Logout</a>
-            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'user_profile' %}">Profile</a>
+            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'user_profile' user.pk %}">Profile</a>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' user.pk %}">Predict</a>
         {% else %}
             <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
@@ -27,7 +27,35 @@
 
 </div>
 <h1 align="center">Hello, {{ user.username|default:'Guest' }}</h1>
-
+<div class="container" >
+    <p style="text-align: justify;">Restaurant revenue is a modern demo web-application. First of all, it is highly
+        suitable for restaurant owners, but also can be useful for consulting agencies. The application helps to predict
+        restaurant revenue.</p>
+    <p style="text-align: justify;">The analysis requires only the following initial data:</p>
+    <ul style="text-align: justify;">
+        <li>Restaurant opening date;</li>
+        <li>Type of the city: big or not;</li>
+        <li>Type of the restaurant: FC: food court, IL: inline, DT: drive thru, MB: mobile;</li>
+        <li>Demographic data include population in the area, age and gender of the target audience, development
+            scales;
+        </li>
+        <li>Real estate data mainly related to the front facade, parking, etc.</li>
+        <li>Commercial data include the existence of points of interest like schools, banks and other QSR operators.
+        </li>
+    </ul>
+    <p style="text-align: justify;">Restaurant revenue works on the basis of a neural network developed on the Random
+        Forest architecture. The algorithm is guaranteed to be accurate, as the dataset used to train the model uses
+        data from 137 restaurants.</p>
+    <p style="text-align: justify;">Here are some of key features:</p>
+    <ul>
+        <li style="text-align: justify;">Lightweight and clean design</li>
+        <li style="text-align: justify;">User-friendly interface</li>
+        <li style="text-align: justify;">Requires only 10-15 seconds to get the result you need</li>
+        <li style="text-align: justify;">This service has the ability to train a model on its own dataset</li>
+        <li style="text-align: justify;">All input datasets must be in the same format</li>
+        <li style="text-align: justify;">.cvs format of income files</li>
+    </ul>
+</div>
 </body>
 </html>
 

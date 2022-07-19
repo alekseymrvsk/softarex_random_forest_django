@@ -10,6 +10,8 @@ from .forms import (EditProfileForm, ProfileForm)
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 
+from .models import UserProfile
+
 logger = logging.getLogger(__name__)
 
 
@@ -17,8 +19,17 @@ def home(request):
     return render(request, "registration/home.html")
 
 
-def profile(request):
-    return render(request, "registration/user_profile.html")
+def profile(request, user_id):
+    if UserProfile.objects.filter(user_id=user_id).exists():
+        user_n_predict = UserProfile.objects.get(user_id=user_id)
+        context = {'user_n_predict': user_n_predict}
+    else:
+        user_current = UserProfile()
+        user_current.user_id = user_id
+        user_current.n_predict = 0
+        user_current.save()
+        context = {'user_n_predict': user_current}
+    return render(request, "registration/user_profile.html", context)
 
 
 @login_required
