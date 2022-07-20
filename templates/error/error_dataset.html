@@ -16,7 +16,7 @@
         {% if user.is_authenticated %}
             <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'logout' %}">Logout</a>
-            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'user_profile' %}">Profile</a>
+            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'user_profile' user.pk %}">Profile</a>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' user.pk %}">Predict</a>
         {% else %}
             <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>

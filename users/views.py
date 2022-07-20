@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def home(request):
-    return render(request, "registration/home.html")
+    return render(request, "home/home.html")
 
 
 def profile(request, user_id):

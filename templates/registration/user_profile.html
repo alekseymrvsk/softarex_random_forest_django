@@ -1,43 +1,46 @@
 <!DOCTYPE html>
 {% if user.is_authenticated %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Restaurant revenue</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-</head>
-<body>
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-bottom">
-    <h5 class="my-0 mr-md-auto fs-4">Restaurant revenue</h5>
-    <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-        {% if user.is_authenticated %}
-            <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
-            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'logout' %}">Logout</a>
-            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'home' %}">Home</a>
-            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' user.pk %}">Predict</a>
-        {% else %}
-            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'home' %}">Home</a>
-            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'signup' %}">Sign Up</a>
-            <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'login' %}">Login</a>
-        {% endif %}
-    </nav>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Restaurant revenue</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+              integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+              crossorigin="anonymous">
+    </head>
+    <body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-bottom">
+        <h5 class="my-0 mr-md-auto fs-4">Restaurant revenue</h5>
+        <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            {% if user.is_authenticated %}
+                <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
+                <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'logout' %}">Logout</a>
+                <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'home' %}">Home</a>
+                <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' user.pk %}">Predict</a>
+            {% else %}
+                <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'home' %}">Home</a>
+                <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'signup' %}">Sign Up</a>
+                <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </nav>
 
-</div>
-<div align="center">
-    <h1><strong>Username:</strong> {{ user.username }}</h1><br><br>
-    <h1><strong>First name:</strong> {{ user.first_name}}</h1><br><br>
-    <h1><strong>Last name:</strong> {{ user.last_name}}</h1><br><br>
-    <h1><strong>Email:</strong> {{ user.email}}</h1><br><br>
-    <h1><strong>Amount of predictions:</strong> {{ user_n_predict.n_predict}}</h1><br><br>
-    <a href="{% url 'edit_profile' %}"><button class="button">Edit</button></a>
-</div>
+    </div>
+    <div align="center">
+        <h1><strong>Username:</strong> {{ user.username }}</h1><br><br>
+        <h1><strong>First name:</strong> {{ user.first_name }}</h1><br><br>
+        <h1><strong>Last name:</strong> {{ user.last_name }}</h1><br><br>
+        <h1><strong>Email:</strong> {{ user.email }}</h1><br><br>
+        <h1><strong>Amount of predictions:</strong> {{ user_n_predict.n_predict }}</h1><br><br>
+        <a href="{% url 'edit_profile' %}">
+            <button class="button">Edit</button>
+        </a>
+    </div>
 
 
-</body>
-</html>
+    </body>
+    </html>
 {% else %}
     <h1>Error, you need to login</h1>
     <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'login' %}">Login</a>

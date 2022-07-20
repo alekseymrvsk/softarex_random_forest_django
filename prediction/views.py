@@ -76,8 +76,8 @@ def save_file(request, user_id):
         user_predict = User.objects.get(pk=user_id)
         data = open(os.path.join("prediction/user_output_data/prediction" + user_predict.username + ".csv"), 'r').read()
         response = HttpResponse(data, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment;filename=table.csv'
+        response['Content-Disposition'] = 'attachment;filename=prediction.csv'
     except FileNotFoundError:
-        return render(request, 'prediction/prediction.html', {'flag': True})
+        return render(request, 'prediction/prediction.html', {'flag_save_csv': True})
 
     return response

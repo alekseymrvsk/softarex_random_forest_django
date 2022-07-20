@@ -14,7 +14,7 @@
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-bottom">
         <h5 class="my-0 mr-md-auto fs-4">Restaurant revenue</h5>
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-            <h1 class="me-3 py-3">{{ user.username|default:'Guest' }}</h1>
+            <h1 class="me-3 py-3">{{ user.username }}</h1>
 
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'logout' %}">Logout</a>
             <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'prediction' user.pk %}">Predict</a>
@@ -43,9 +43,10 @@
                 <a href="{% url 'get_csv' user.pk %}">
                     <button>Get CSV</button>
                 </a>
-                {% if flag %}
+                {% if flag_save_csv %}
                     <div id="some_flag" title="Some Flag">
-                        <p>Firstly predict your data</p>
+
+                        <font color="red">Firstly predict your data</font>
                     </div>
                 {% endif %}
                 <b></b>{{ metric }}<br>
