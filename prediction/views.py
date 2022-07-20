@@ -60,7 +60,9 @@ def index(request, user_id):
                 logger.error("Get metric")
             else:
                 return render(request, 'error/error_dataset.html')
-            pd.DataFrame(predict).to_csv("prediction/user_output_data/prediction" + user_current.username + ".csv")
+            df = pd.DataFrame(predict)
+            df.columns = ["Prediction"]
+            df.to_csv("prediction/user_output_data/prediction" + user_current.username + ".csv", index_label="Id")
             user_n_predict.n_predict += 1
 
             user_current.save()
