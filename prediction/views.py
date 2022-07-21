@@ -1,18 +1,14 @@
 import os
-
-import numpy as np
 from django.contrib.auth.models import User
-from django.core.exceptions import FieldDoesNotExist
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.shortcuts import render
-from reportlab.pdfgen import canvas
-import csv
 from users.models import UserProfile
 from .classRandomForest import MyRandomForest
 import logging
 import pandas as pd
-from wsgiref.util import FileWrapper
+from pathlib import Path
+
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +31,10 @@ def index(request, user_id):
                 fs = FileSystemStorage()
                 filename = fs.save(uploaded_file_train.name, uploaded_file_train)
                 uploaded_file_train_url = fs.url(filename)
-                dataset = pd.read_csv(uploaded_file_train_url[1:])
+                if Path(uploaded_file_train_url[1:]).suffix == '.csv':
+                    dataset = pd.read_csv(uploaded_file_train_url[1:])
+                else:
+                    return render(request, 'error/error_dataset.html')
                 if len(dataset.columns) == 43:
                     model.fit_model(uploaded_file_train_url[1:])
                 else:
@@ -49,8 +48,10 @@ def index(request, user_id):
                 fs = FileSystemStorage()
                 filename = fs.save(uploaded_file_predict.name, uploaded_file_predict)
                 uploaded_file_url = fs.url(filename)
-
-                dataset = pd.read_csv(uploaded_file_url[1:])
+                if Path(uploaded_file_url[1:]).suffix == '.csv':
+                    dataset = pd.read_csv(uploaded_file_url[1:])
+                else:
+                    return render(request, 'error/error_dataset.html')
                 if len(dataset.columns) == 42:
                     predict = model.predict_data(uploaded_file_url[1:])
                 else:

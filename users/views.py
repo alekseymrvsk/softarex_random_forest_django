@@ -19,13 +19,13 @@ def home(request):
     return render(request, "home/home.html")
 
 
-def profile(request, user_id):
-    if UserProfile.objects.filter(user_id=user_id).exists():
-        user_n_predict = UserProfile.objects.get(user_id=user_id)
+def profile(request):
+    if UserProfile.objects.filter(user_id=request.user.pk).exists():
+        user_n_predict = UserProfile.objects.get(user_id=request.user.pk)
         context = {'user_n_predict': user_n_predict}
     else:
         user_current = UserProfile()
-        user_current.user_id = user_id
+        user_current.user_id = request.user.pk
         user_current.n_predict = 0
         user_current.save()
         context = {'user_n_predict': user_current}
