@@ -33,6 +33,15 @@
         <h1><strong>Last name:</strong> {{ user.last_name }}</h1><br><br>
         <h1><strong>Email:</strong> {{ user.email }}</h1><br><br>
         <h1><strong>Amount of predictions:</strong> {{ user_n_predict.n_predict }}</h1><br><br>
+        <h1><strong>Previous results:</strong></h1><br><br>
+        {% for file in user_result_file %}
+            <div class="col-2">
+                <div class="alert alert-danger">
+                    <a class="me-3 py-4 text-dark text-decoration-none" href="{% url 'show_data' %}">Result {{ file.created_at }}</a>
+                </div>
+            </div>
+        {% endfor %}
+
         <a href="{% url 'edit_profile' %}">
             <button class="button">Edit</button>
         </a>

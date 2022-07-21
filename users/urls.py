@@ -8,5 +8,6 @@ urlpatterns = [
     path('redirect/', views.redirect_view),
     path('user_profile/', views.profile, name='user_profile'),
     path('view_profile/edit_profile/', views.edit_profile, name='edit_profile'),
+    path('show_data/', views.show_data, name='show_data'),
 
 ]
