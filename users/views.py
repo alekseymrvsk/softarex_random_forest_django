@@ -24,14 +24,14 @@ def home(request):
     return render(request, "home/home.html")
 
 
-def show_data(request):
-    try:
-        user_predict = ResultFiles.objects.get(created_at=request.GET.get("created_at"))
-        data = user_predict.result
-        response = HttpResponse(data, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment;filename=prediction.csv'
-    except FileNotFoundError:
-        return render(request, 'prediction/prediction.html', {'flag_save_csv': True})
+def show_data(request, file_id):
+    #try:
+    user_predict = ResultFiles.objects.get(pk=file_id)
+    data = open(user_predict.result, 'r').read()
+    response = HttpResponse(data, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment;filename=prediction.csv'
+    #except FileNotFoundError:
+        #return render(request, 'error/error_dataset.html')
 
     return response
 

@@ -4,6 +4,6 @@ from . import views
 urlpatterns = [
 
     path('<int:user_id>', views.index, name='prediction'),
-    path('get_csv/<int:user_id>', views.save_file, name='get_csv'),
+    path('get_csv/<int:user_id>/<int:file_pk>/', views.save_file, name='get_csv'),
 
 ]

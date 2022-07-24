@@ -40,9 +40,12 @@
 
             <div class="col-4 offset-1">
                 <h1>Result</h1>
-                <a href="{% url 'get_csv' user.pk %}">
-                    <button>Get CSV</button>
-                </a>
+                {% if is_predict %}
+                    <a href="{% url 'get_csv' user.pk user_result_pk %}">
+                        <button>Get CSV</button>
+                    </a>
+                {% endif %}
+
                 {% if flag_save_csv %}
                     <div id="some_flag" title="Some Flag">
 

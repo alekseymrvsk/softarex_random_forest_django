@@ -15,7 +15,7 @@ class UserProfile(models.Model):
 
 class ResultFiles(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    result = models.FileField(upload_to='prediction/user_output_data/%Y/%m/%d')
+    result = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
