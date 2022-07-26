@@ -1,21 +1,15 @@
-import os
-
-from django.contrib.auth.models import User
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.contrib.auth.forms import UserCreationForm
-from django.views.generic.edit import CreateView
-from django.shortcuts import redirect
 import logging
-from django.shortcuts import render, redirect
-from datetime import datetime
-from .forms import (EditProfileForm, ProfileForm)
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
 
-from .models import UserProfile
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
+
+from .forms import (EditProfileForm)
 from .models import ResultFiles
+from .models import UserProfile
 
 logger = logging.getLogger(__name__)
 
@@ -25,13 +19,14 @@ def home(request):
 
 
 def show_data(request, file_id):
-    #try:
+    # try:
     user_predict = ResultFiles.objects.get(pk=file_id)
     data = open(user_predict.result, 'r').read()
     response = HttpResponse(data, content_type='text/csv')
     response['Content-Disposition'] = 'attachment;filename=prediction.csv'
-    #except FileNotFoundError:
-        #return render(request, 'error/error_dataset.html')
+    logger.info("Download result")
+    # except FileNotFoundError:
+    # return render(request, 'error/error_dataset.html')
 
     return response
 
@@ -73,6 +68,7 @@ def edit_profile(request):
             custom_form = form.save(False)
             custom_form.user = user_form
             custom_form.save()
+            logger.info("Edit profile")
             return redirect('/user_profile/')
     else:
         form = EditProfileForm(instance=request.user)
@@ -90,4 +86,4 @@ class SignUp(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
-    logger.error("Sign up")
+    logger.info("Sign up")
