@@ -29,11 +29,13 @@ def check_dataset(file, check_train=True):
             if len(dataset.columns) == NUMBER_COLUMNS_TRAIN:
                 return True
             else:
+                logger.warning("Invalid file")
                 return False
         else:
             if len(dataset.columns) == NUMBER_COLUMNS_TEST:
                 return True
             else:
+                logger.warning("Invalid file")
                 return False
 
 
