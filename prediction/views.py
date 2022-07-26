@@ -21,7 +21,7 @@ INPUT_FILE_FORMAT = '.csv'
 logger = logging.getLogger(__name__)
 
 
-# For checking train dataset sey check_train True, for checking test dataset - False
+# For checking train dataset set check_train True, for checking test dataset - False
 def check_dataset(file, check_train=True):
     if Path(file).suffix == INPUT_FILE_FORMAT:
         dataset = pd.read_csv(file)
@@ -51,9 +51,6 @@ def index(request, user_id):
     else:
         user_current = User.objects.get(pk=user_id)
         user_n_predict = UserProfile.objects.get(user_id=user_id)
-
-        # if os.path.exists("prediction/user_output_data/prediction" + user_current.username + ".csv"):
-        # os.remove("prediction/user_output_data/prediction" + user_current.username + ".csv")
         if request.method == "POST":
             if request.FILES.get('file_to_train') is not None:
                 uploaded_file_train = request.FILES.get('file_to_train')
