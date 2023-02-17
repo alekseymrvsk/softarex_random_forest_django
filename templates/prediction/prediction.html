@@ -52,7 +52,6 @@
                         <font color="red">Firstly predict your data</font>
                     </div>
                 {% endif %}
-                <b></b>{{ metric }}<br>
                 {% for info in predict %}
                     <div class="alert alert-danger">
                         <b>Prediction {{ forloop.counter }}: </b>{{ info }}<br>

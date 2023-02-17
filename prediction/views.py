@@ -1,7 +1,7 @@
 import logging
 import os
 from pathlib import Path
-
+import requests
 import pandas as pd
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
@@ -20,9 +20,12 @@ INPUT_FILE_FORMAT = '.csv'
 
 logger = logging.getLogger(__name__)
 
+is_user_train = False
+
+url = 'http://localhost:8000/get_data'
 
 # For checking train dataset set check_train True, for checking test dataset - False
-def check_dataset(file, check_train=True):
+def check_dataset(file, check_train=True):      #МОЖНО УДАЛЯТЬ ИЗ-ЗА API
     if Path(file).suffix == INPUT_FILE_FORMAT:
         dataset = pd.read_csv(file)
         if check_train:
@@ -57,14 +60,12 @@ def index(request, user_id):
                 fs = FileSystemStorage()
                 filename = fs.save(uploaded_file_train.name, uploaded_file_train)
                 uploaded_file_train_url = fs.url(filename)
-
-                if check_dataset(uploaded_file_train_url[1:], True):
-                    model.fit_model(uploaded_file_train_url[1:])
-                else:
+                is_user_train = True
+                if not check_dataset(uploaded_file_train_url[1:], True):
                     return render(request, 'error/error_dataset.html')
                 logger.info("Train model using user data")
             else:
-                model.fit_model()
+                is_user_train = False
                 logger.info("Train model using default data")
             if request.FILES.get('file_to_process') is not None:
                 uploaded_file_predict = request.FILES.get('file_to_process')
@@ -72,39 +73,42 @@ def index(request, user_id):
                 filename = fs.save(uploaded_file_predict.name, uploaded_file_predict)
                 uploaded_file_url = fs.url(filename)
 
-                if check_dataset(uploaded_file_url[1:], False):
-                    predict = model.predict_data(uploaded_file_url[1:])
-                else:
+                if not check_dataset(uploaded_file_url[1:], False):
                     return render(request, 'error/error_dataset.html')
 
+                user_result_file = ResultFiles()
+                user_result_file.user_id = user_id
+                user_result_file.save()
+                if is_user_train:
+                    files = {'INPUT_TEST': open(uploaded_file_url[1:], 'rb'),
+                             'INPUT_TRAIN': open(uploaded_file_train_url[1:], 'rb')}
+                else:
+                    files = {'INPUT_TEST': open(uploaded_file_url[1:], 'rb')}
+
+                resp = requests.get(url=url, files=files, allow_redirects=True)
+                with open("prediction/user_output_data/prediction"+user_current.username + str(
+                            user_result_file.pk)+".csv", "w") as f:
+                     f.write(resp.text)
+
+                user_result_file.result = os.path.join(
+                    "prediction/user_output_data/prediction" + user_current.username + str(
+                        user_result_file.pk) + ".csv")
+
+                predict = pd.read_csv("prediction/user_output_data/prediction"+user_current.username + str(
+                            user_result_file.pk)+".csv")
+
+                predict = predict.drop(columns=['Id'])
+
                 logger.info("Predict data")
-                metric = model.get_metric()
-                logger.info("Get metric")
 
-                if metric is not None:
-                    user_result_file = ResultFiles()
-                    user_result_file.user_id = user_id
-                    user_result_file.save()
+                user_n_predict.n_predict += 1
 
-                    df = pd.DataFrame(predict)
-                    df.columns = ["Prediction"]
-                    df.to_csv(
-                        "prediction/user_output_data/prediction" + user_current.username + str(
-                            user_result_file.pk) + ".csv",
-                        index_label="Id")
-
-                    user_result_file.result = os.path.join(
-                        "prediction/user_output_data/prediction" + user_current.username + str(
-                            user_result_file.pk) + ".csv")
-
-                    user_n_predict.n_predict += 1
-
-                    user_result_file.save()
-                    user_current.save()
-                    user_n_predict.save()
-                    context = {'metric': metric, 'predict': predict, 'user_result_pk': user_result_file.pk,
-                               "is_predict": True}
-                    return render(request, 'prediction/prediction.html', context)
+                user_result_file.save()
+                user_current.save()
+                user_n_predict.save()
+                context = {'predict': predict, 'user_result_pk': user_result_file.pk,
+                           "is_predict": True}
+                return render(request, 'prediction/prediction.html', context)
             else:
                 return render(request, 'error/error_dataset.html')
 
