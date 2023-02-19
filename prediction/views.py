@@ -1,3 +1,4 @@
+import csv
 import logging
 import os
 from pathlib import Path
@@ -94,11 +95,6 @@ def index(request, user_id):
                     "prediction/user_output_data/prediction" + user_current.username + str(
                         user_result_file.pk) + ".csv")
 
-                predict = pd.read_csv("prediction/user_output_data/prediction"+user_current.username + str(
-                            user_result_file.pk)+".csv")
-
-                predict = predict.drop(columns=['Id'])
-
                 logger.info("Predict data")
 
                 user_n_predict.n_predict += 1
@@ -106,7 +102,7 @@ def index(request, user_id):
                 user_result_file.save()
                 user_current.save()
                 user_n_predict.save()
-                context = {'predict': predict, 'user_result_pk': user_result_file.pk,
+                context = {'user_result_pk': user_result_file.pk,
                            "is_predict": True}
                 return render(request, 'prediction/prediction.html', context)
             else:
